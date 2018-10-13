@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <input placeholder="Start your search" />
+    <ul id="suggestions"></ul>
+    <script src="https://unpkg.com/@reactivex/rxjs@5.3.0/dist/global/Rx.js "></script>
+    <script>
+        const cities = ['rome', 'madrid', 'paris', 'brussels', 'eindhoven', 'berlin', 'copenhagen', 'stockholm'];
+        const myAwesomeSearch = value => cities.filter(city => city.indexOf(value) !== -1);
+
+        const input = document.querySelector('input');
+        const suggestions = document.querySelector('#suggestions');
+
+        Rx.Observable.fromEvent(input, 'keyup')
+            .throttleTime(5000)
+            //.debounceTime(5000)
+            //.auditTime(5000)
+            .pluck('target', 'value')
+            .map(value => myAwesomeSearch(value))
+            .map(cities => cities.map(city => `<li>${city}</li>`).join(''))
+            .subscribe(html => suggestions.innerHTML = html);
+    </script>
+</body>
+</html>

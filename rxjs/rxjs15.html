@@ -1,0 +1,24 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <script src="https://unpkg.com/@reactivex/rxjs@5.3.0/dist/global/Rx.js "></script>
+    <script>
+        // Create a stream of clicks.
+        var source$ = Rx.Observable.fromEvent(document.querySelector('body'), 'click');
+
+        // Create another stream of the x coordinate of the clicks.
+        xCoordinate$ = source$.map(function (e) { return e.x; });
+
+        // logs the click event object
+        source$.subscribe(data => console.log(data));
+
+        // logs the x coordinates
+        xCoordinate$.subscribe(data => console.log(data));
+    </script>
+</body>
+</html>

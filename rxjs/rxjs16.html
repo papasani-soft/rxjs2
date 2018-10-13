@@ -1,0 +1,28 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <script src="https://unpkg.com/@reactivex/rxjs@5.3.0/dist/global/Rx.js "></script>
+
+    <script>
+
+        var subject = new Rx.Subject();
+
+        // Here the subject is acting like a data producer
+        // because it is being subscribed to
+        subject.subscribe(v => console.log('consumer A: ' + v));
+        subject.subscribe(v => console.log('consumer B: ' + v));
+
+        // Create a source of the data, which in our case is an observable
+        var observable = Rx.Observable.from([0, 1]);
+
+        // Here the same subject acs as a data consumer because it
+        // can subscribe to another observable
+        observable.subscribe(subject);
+    </script>
+</body>
+</html>

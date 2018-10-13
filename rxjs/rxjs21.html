@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <script src="https://unpkg.com/@reactivex/rxjs@5.3.0/dist/global/Rx.js "></script>
+    <script>
+        // Create a regular observable
+        var observable = Rx.Observable.interval(500).take(4);
+
+        // Create a subject that we use as a way to mulitcast
+        var sub = new Rx.Subject();
+
+        // Multicast it
+        var source = observable.multicast(sub);
+
+        // Subscriber 1: Add a subscriber before the observer starts emitting
+        source.subscribe(x => console.log('A : ' + x));
+
+        // This is when the subject actually connects to the source
+        // and data can begin to emit
+        source.connect();
+
+        // Subscriber 2: Add a subscriber while the observer is still emitting,
+        setTimeout(() => {
+            source.subscribe(x => console.log('B : ' + x));
+        }, 1200);
+
+        // Subscriber 3: Add a subscriber long after the observable is done emitting
+        setTimeout(() => {
+            source.subscribe(x => console.log('C : ' + x));
+        }, 2400);
+    </script>
+</body>
+</html>
